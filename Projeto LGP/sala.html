@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Sala</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+
+    main {
+      min-height: calc(100vh - 160px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .room-container { 
+      position: relative; 
+      display: inline-block; 
+      margin-top: 20px;
+    }
+
+    .room {
+      max-width: 800px; 
+      width: 100%; 
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+      display: block;
+    }
+
+    .obj { 
+      position: absolute; 
+      display: block; 
+      cursor: pointer; 
+      background: rgba(255,255,255,0.01); 
+    }
+
+    .obj:hover { 
+      outline: 2px dashed rgba(0,0,0,0.3); 
+    }
+  </style>
+</head>
+<body class="sala">
+
+  <main>
+    <header>
+      <h1>Sala</h1>
+      <p>Clica num objeto para aprender o gesto em LGP</p>
+    </header>
+
+    <div class="room-container">
+      <img id="roomImg" src="imagens/sala.png" alt="Sala" class="room">
+
+      <!-- Objetos -->
+      <a href="videos/sofa.mp4" class="obj sofa" target="_blank" title="Sofá"></a>
+      <a href="videos/mesa_centro.mp4" class="obj mesa_centro" target="_blank" title="Mesa de Centro"></a>
+      <a href="videos/tv.mp4" class="obj tv" target="_blank" title="Televisão"></a>
+      <a href="videos/candeeiro.mp4" class="obj candeeiro" target="_blank" title="Candeeiro"></a>
+      <a href="videos/estante.mp4" class="obj estante" target="_blank" title="Estante"></a>
+      <a href="videos/relogio.mp4" class="obj relogio" target="_blank" title="Relógio"></a>
+    </div>
+  </main>
+
+  <footer>
+    <a href="casa.html" class="btn">Voltar à Casa</a>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const img = document.getElementById('roomImg');
+      const objetos = {
+        sofa:        "200,500,600,700",
+        mesa_centro: "300,650,500,750",
+        tv:          "100,200,250,400",
+        candeeiro:   "650,200,700,400",
+        estante:     "50,300,180,600",
+        relogio:     "700,100,750,180"
+      };
+
+      function positionObjects() {
+        const natW = img.naturalWidth || img.width;
+        const natH = img.naturalHeight || img.height;
+
+        Object.entries(objetos).forEach(([classe, coords]) => {
+          const el = document.querySelector(".obj." + classe);
+          if (!el) return;
+          const [x1, y1, x2, y2] = coords.split(",").map(Number);
+          el.style.left   = (x1 / natW) * 100 + "%";
+          el.style.top    = (y1 / natH) * 100 + "%";
+          el.style.width  = ((x2 - x1) / natW) * 100 + "%";
+          el.style.height = ((y2 - y1) / natH) * 100 + "%";
+        });
+      }
+
+      if (img.complete) positionObjects();
+      else img.addEventListener("load", positionObjects);
+      window.addEventListener("resize", positionObjects);
+    });
+  </script>
+
+</body>
+</html>
