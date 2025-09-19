@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Casa de Banho</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+
+    main {
+      min-height: calc(100vh - 160px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center; /* centra texto e imagem */
+    }
+
+    .room-container { 
+      position: relative; 
+      display: inline-block; 
+      margin-top: 20px; /* espaço entre título e imagem */
+    }
+
+    .room {
+      max-width: 800px; 
+      width: 100%; 
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+      display: block;
+    }
+
+    .obj { 
+      position: absolute; 
+      display: block; 
+      cursor: pointer; 
+      background: rgba(255,255,255,0.01); 
+    }
+
+    .obj:hover { 
+      outline: 2px dashed rgba(0,0,0,0.3); 
+    }
+  </style>
+</head>
+<body class="banho">
+
+  <main>
+    <header>
+      <h1>Casa de Banho</h1>
+      <p>Clica num objeto para aprender o gesto em LGP</p>
+    </header>
+
+    <div class="room-container">
+      <img id="roomImg" src="imagens/casa_banho.png" alt="Casa de Banho" class="room">
+
+      <!-- Objetos -->
+      <a href="videos/lavatorio.mp4" class="obj lavatorio" target="_blank" title="Lavatório"></a>
+      <a href="videos/espelho.mp4" class="obj espelho" target="_blank" title="Espelho"></a>
+      <a href="videos/sanita.mp4" class="obj sanita" target="_blank" title="Sanita"></a>
+      <a href="videos/banheira.mp4" class="obj banheira" target="_blank" title="Banheira"></a>
+      <a href="videos/chuveiro.mp4" class="obj chuveiro" target="_blank" title="Chuveiro"></a>
+      <a href="videos/toalheiro.mp4" class="obj toalheiro" target="_blank" title="Toalheiro"></a>
+    </div>
+  </main>
+
+  <footer>
+    <a href="casa.html" class="btn">Voltar à Casa</a>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const img = document.getElementById('roomImg');
+      const objetos = {
+        lavatorio: "500,300,650,500",
+        espelho:   "500,150,650,280",
+        sanita:    "200,500,350,700",
+        banheira:  "50,400,180,650",
+        chuveiro:  "700,200,780,500",
+        toalheiro: "300,650,450,720"
+      };
+
+      function positionObjects() {
+        const natW = img.naturalWidth || img.width;
+        const natH = img.naturalHeight || img.height;
+
+        Object.entries(objetos).forEach(([classe, coords]) => {
+          const el = document.querySelector(".obj." + classe);
+          if (!el) return;
+          const [x1, y1, x2, y2] = coords.split(",").map(Number);
+          el.style.left   = (x1 / natW) * 100 + "%";
+          el.style.top    = (y1 / natH) * 100 + "%";
+          el.style.width  = ((x2 - x1) / natW) * 100 + "%";
+          el.style.height = ((y2 - y1) / natH) * 100 + "%";
+        });
+      }
+
+      if (img.complete) positionObjects();
+      else img.addEventListener("load", positionObjects);
+      window.addEventListener("resize", positionObjects);
+    });
+  </script>
+
+</body>
+</html>
